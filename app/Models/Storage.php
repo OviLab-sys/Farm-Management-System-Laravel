@@ -7,5 +7,10 @@ use Illuminate\Database\Eloquent\Model;
 
 class Storage extends Model
 {
-    use HasFactory;
+    protected $fillable = ['location', 'capacity'];
+
+    public function storedCrops()
+    {
+        return $this->hasMany(StoredCrop::class);
+    }
 }

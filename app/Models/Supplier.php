@@ -7,5 +7,11 @@ use Illuminate\Database\Eloquent\Model;
 
 class Supplier extends Model
 {
-    use HasFactory;
+    protected $fillable = ['stock_type', 'supplier_id', 'purchase_date', 'quantity', 'total_cost'];
+
+    public function supplier()
+    {
+        return $this->belongsTo(Supplier::class, 'supplier_id');
+    }
+
 }

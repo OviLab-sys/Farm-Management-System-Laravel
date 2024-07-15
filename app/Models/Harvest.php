@@ -7,5 +7,10 @@ use Illuminate\Database\Eloquent\Model;
 
 class Harvest extends Model
 {
-    use HasFactory;
+    protected $fillable = ['crop_id', 'harvest_date', 'quantity', 'quality'];
+
+    public function crop()
+    {
+        return $this->belongsTo(Crop::class);
+    }
 }

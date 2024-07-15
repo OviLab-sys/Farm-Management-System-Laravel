@@ -7,5 +7,5 @@ use Illuminate\Database\Eloquent\Model;
 
 class FertilizerApplication extends Model
 {
-    use HasFactory;
+    protected $fillable = ['stock_id', 'application_date', 'quantity'];
 }

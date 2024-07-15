@@ -7,5 +7,10 @@ use Illuminate\Database\Eloquent\Model;
 
 class Planting extends Model
 {
-    use HasFactory;
+    protected $fillable = ['crops_id', 'planting_date', 'expected_harvest_date', 'quantity_planted'];
+
+    public function crop()
+    {
+        return $this->belongsTo(Crop::class, 'crops_id');
+    }
 }
