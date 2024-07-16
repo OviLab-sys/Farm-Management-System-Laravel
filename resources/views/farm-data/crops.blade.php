@@ -2,7 +2,6 @@
 
 @section('content')
 <div class="container">
-    <h1>Sales</h1>
-    <!-- Content for displaying sales -->
+    <h1>Crops</h1>
 </div>
 @endsection
