@@ -9,7 +9,13 @@ class FertilizerApplicationController extends Controller
 {
     public function index()
     {
-        return response()->json(FertilizerApplication::all());
+        $fertilizerApplications = FertilizerApplication::all();
+        return view('fertilizer_applications.index', compact('fertilizerApplications'));
+    }
+
+    public function create()
+    {
+        return view('fertilizer_applications.create');
     }
 
     public function store(Request $request)
@@ -19,12 +25,20 @@ class FertilizerApplicationController extends Controller
             'application_date' => 'required|date',
             'quantity' => 'required|string|max:90',
         ]);
-        return response()->json(FertilizerApplication::create($request->all()), 201);
+        FertilizerApplication::create($request->all());
+        return redirect()->route('fertilizer_applications.index');
     }
 
     public function show($id)
     {
-        return response()->json(FertilizerApplication::findOrFail($id));
+        $fertilizerApplication = FertilizerApplication::findOrFail($id);
+        return view('fertilizer_applications.show', compact('fertilizerApplication'));
+    }
+
+    public function edit($id)
+    {
+        $fertilizerApplication = FertilizerApplication::findOrFail($id);
+        return view('fertilizer_applications.edit', compact('fertilizerApplication'));
     }
 
     public function update(Request $request, $id)
@@ -36,12 +50,12 @@ class FertilizerApplicationController extends Controller
         ]);
         $fertilizerApplication = FertilizerApplication::findOrFail($id);
         $fertilizerApplication->update($request->all());
-        return response()->json($fertilizerApplication);
+        return redirect()->route('fertilizer_applications.index');
     }
 
     public function destroy($id)
     {
         FertilizerApplication::findOrFail($id)->delete();
-        return response()->json(null, 204);
+        return redirect()->route('fertilizer_applications.index');
     }
 }

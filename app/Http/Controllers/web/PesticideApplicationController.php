@@ -9,7 +9,13 @@ class PesticideApplicationController extends Controller
 {
     public function index()
     {
-        return response()->json(PesticideApplication::all());
+        $pesticideApplications = PesticideApplication::all();
+        return view('pesticide_applications.index', compact('pesticideApplications'));
+    }
+
+    public function create()
+    {
+        return view('pesticide_applications.create');
     }
 
     public function store(Request $request)
@@ -20,12 +26,20 @@ class PesticideApplicationController extends Controller
             'application_date' => 'required|date',
             'quantity' => 'required|string|max:90',
         ]);
-        return response()->json(PesticideApplication::create($request->all()), 201);
+        PesticideApplication::create($request->all());
+        return redirect()->route('pesticide_applications.index');
     }
 
     public function show($id)
     {
-        return response()->json(PesticideApplication::findOrFail($id));
+        $pesticideApplication = PesticideApplication::findOrFail($id);
+        return view('pesticide_applications.show', compact('pesticideApplication'));
+    }
+
+    public function edit($id)
+    {
+        $pesticideApplication = PesticideApplication::findOrFail($id);
+        return view('pesticide_applications.edit', compact('pesticideApplication'));
     }
 
     public function update(Request $request, $id)
@@ -38,12 +52,12 @@ class PesticideApplicationController extends Controller
         ]);
         $pesticideApplication = PesticideApplication::findOrFail($id);
         $pesticideApplication->update($request->all());
-        return response()->json($pesticideApplication);
+        return redirect()->route('pesticide_applications.index');
     }
 
     public function destroy($id)
     {
         PesticideApplication::findOrFail($id)->delete();
-        return response()->json(null, 204);
+        return redirect()->route('pesticide_applications.index');
     }
 }

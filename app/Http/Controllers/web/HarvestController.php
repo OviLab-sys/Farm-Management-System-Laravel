@@ -9,7 +9,13 @@ class HarvestController extends Controller
 {
     public function index()
     {
-        return response()->json(Harvest::all());
+        $harvests = Harvest::all();
+        return view('harvests.index', compact('harvests'));
+    }
+
+    public function create()
+    {
+        return view('harvests.create');
     }
 
     public function store(Request $request)
@@ -20,12 +26,20 @@ class HarvestController extends Controller
             'quantity' => 'nullable|string|max:90',
             'quality' => 'required|string|max:90',
         ]);
-        return response()->json(Harvest::create($request->all()), 201);
+        Harvest::create($request->all());
+        return redirect()->route('harvests.index');
     }
 
-    public function show($id)
+    public function delete($id)
     {
-        return response()->json(Harvest::findOrFail($id));
+        $harvest = Harvest::findOrFail($id);
+        return view('harvests.delete', compact('harvest'));
+    }
+
+    public function edit($id)
+    {
+        $harvest = Harvest::findOrFail($id);
+        return view('harvests.edit', compact('harvest'));
     }
 
     public function update(Request $request, $id)
@@ -38,12 +52,12 @@ class HarvestController extends Controller
         ]);
         $harvest = Harvest::findOrFail($id);
         $harvest->update($request->all());
-        return response()->json($harvest);
+        return redirect()->route('harvests.index');
     }
 
     public function destroy($id)
     {
         Harvest::findOrFail($id)->delete();
-        return response()->json(null, 204);
+        return redirect()->route('harvests.index');
     }
 }

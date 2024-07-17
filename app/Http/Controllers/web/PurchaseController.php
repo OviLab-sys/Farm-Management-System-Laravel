@@ -9,7 +9,13 @@ class PurchaseController extends Controller
 {
     public function index()
     {
-        return response()->json(Purchase::all());
+        $purchases = Purchase::all();
+        return view('purchases.index', compact('purchases'));
+    }
+
+    public function create()
+    {
+        return view('purchases.create');
     }
 
     public function store(Request $request)
@@ -21,12 +27,20 @@ class PurchaseController extends Controller
             'quantity' => 'required|string|max:90',
             'total_cost' => 'required|integer',
         ]);
-        return response()->json(Purchase::create($request->all()), 201);
+        Purchase::create($request->all());
+        return redirect()->route('purchases.index');
     }
 
-    public function show($id)
+    public function delete($id)
     {
-        return response()->json(Purchase::findOrFail($id));
+        $purchase = Purchase::findOrFail($id);
+        return view('purchases.delete', compact('purchase'));
+    }
+
+    public function edit($id)
+    {
+        $purchase = Purchase::findOrFail($id);
+        return view('purchases.edit', compact('purchase'));
     }
 
     public function update(Request $request, $id)
@@ -40,12 +54,12 @@ class PurchaseController extends Controller
         ]);
         $purchase = Purchase::findOrFail($id);
         $purchase->update($request->all());
-        return response()->json($purchase);
+        return redirect()->route('purchases.index');
     }
 
     public function destroy($id)
     {
         Purchase::findOrFail($id)->delete();
-        return response()->json(null, 204);
+        return redirect()->route('purchases.index');
     }
 }

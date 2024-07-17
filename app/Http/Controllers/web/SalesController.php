@@ -9,7 +9,13 @@ class SalesController extends Controller
 {
     public function index()
     {
-        return response()->json(Sales::all());
+        $sales = Sales::all();
+        return view('sales.index', compact('sales'));
+    }
+
+    public function create()
+    {
+        return view('sales.create');
     }
 
     public function store(Request $request)
@@ -22,12 +28,20 @@ class SalesController extends Controller
             'total_price' => 'nullable|integer',
             'customer_id' => 'required|integer',
         ]);
-        return response()->json(Sales::create($request->all()), 201);
+        Sales::create($request->all());
+        return redirect()->route('sales.index');
     }
 
     public function show($id)
     {
-        return response()->json(Sales::findOrFail($id));
+        $sale = Sales::findOrFail($id);
+        return view('sales.show', compact('sale'));
+    }
+
+    public function edit($id)
+    {
+        $sale = Sales::findOrFail($id);
+        return view('sales.edit', compact('sale'));
     }
 
     public function update(Request $request, $id)
@@ -42,12 +56,12 @@ class SalesController extends Controller
         ]);
         $sale = Sales::findOrFail($id);
         $sale->update($request->all());
-        return response()->json($sale);
+        return redirect()->route('sales.index');
     }
 
     public function destroy($id)
     {
         Sales::findOrFail($id)->delete();
-        return response()->json(null, 204);
+        return redirect()->route('sales.index');
     }
 }

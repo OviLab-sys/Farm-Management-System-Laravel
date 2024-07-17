@@ -9,7 +9,13 @@ class StorageController extends Controller
 {
     public function index()
     {
-        return response()->json(Storage::all());
+        $storages = Storage::all();
+        return view('storages.index', compact('storages'));
+    }
+
+    public function create()
+    {
+        return view('storages.create');
     }
 
     public function store(Request $request)
@@ -20,13 +26,19 @@ class StorageController extends Controller
         ]);
 
         $storage = Storage::create($request->all());
-        return response()->json($storage, 201);
+        return redirect()->route('storages.index')->with('success', 'Storage created successfully.');
     }
 
-    public function show($id)
+    public function delete($id)
     {
         $storage = Storage::findOrFail($id);
-        return response()->json($storage);
+        return view('storages.delete', compact('storage'));
+    }
+
+    public function edit($id)
+    {
+        $storage = Storage::findOrFail($id);
+        return view('storages.edit', compact('storage'));
     }
 
     public function update(Request $request, $id)
@@ -38,12 +50,12 @@ class StorageController extends Controller
 
         $storage = Storage::findOrFail($id);
         $storage->update($request->all());
-        return response()->json($storage);
+        return redirect()->route('storages.index')->with('success', 'Storage updated successfully.');
     }
 
     public function destroy($id)
     {
         Storage::findOrFail($id)->delete();
-        return response()->json(null, 204);
+        return redirect()->route('storages.index')->with('success', 'Storage deleted successfully.');
     }
 }

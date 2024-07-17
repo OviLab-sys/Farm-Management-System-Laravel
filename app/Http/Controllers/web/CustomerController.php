@@ -9,7 +9,13 @@ class CustomerController extends Controller
 {
     public function index()
     {
-        return response()->json(Customer::all());
+        $customers = Customer::all();
+        return view('customers.index', compact('customers'));
+    }
+
+    public function create()
+    {
+        return view('customers.create');
     }
 
     public function store(Request $request)
@@ -20,12 +26,20 @@ class CustomerController extends Controller
             'email' => 'nullable|string|max:80',
             'address' => 'required|string|max:100',
         ]);
-        return response()->json(Customer::create($request->all()), 201);
+        Customer::create($request->all());
+        return redirect()->route('customers.index');
     }
 
-    public function show($id)
+    public function delete($id)
     {
-        return response()->json(Customer::findOrFail($id));
+        $customer = Customer::findOrFail($id);
+        return view('customers.delete', compact('customer'));
+    }
+
+    public function edit($id)
+    {
+        $customer = Customer::findOrFail($id);
+        return view('customers.edit', compact('customer'));
     }
 
     public function update(Request $request, $id)
@@ -38,12 +52,12 @@ class CustomerController extends Controller
         ]);
         $customer = Customer::findOrFail($id);
         $customer->update($request->all());
-        return response()->json($customer);
+        return redirect()->route('customers.index');
     }
 
     public function destroy($id)
     {
         Customer::findOrFail($id)->delete();
-        return response()->json(null, 204);
+        return redirect()->route('customers.index');
     }
 }

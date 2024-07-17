@@ -9,7 +9,13 @@ class ExpenseController extends Controller
 {
     public function index()
     {
-        return response()->json(Expense::all());
+        $expenses = Expense::all();
+        return view('expenses.index', compact('expenses'));
+    }
+
+    public function create()
+    {
+        return view('expenses.create');
     }
 
     public function store(Request $request)
@@ -20,12 +26,20 @@ class ExpenseController extends Controller
             'expense_date' => 'required|date',
             'expense_category' => 'required|string',
         ]);
-        return response()->json(Expense::create($request->all()), 201);
+        Expense::create($request->all());
+        return redirect()->route('expenses.index');
     }
 
-    public function show($id)
+    public function delete($id)
     {
-        return response()->json(Expense::findOrFail($id));
+        $expense = Expense::findOrFail($id);
+        return view('expenses.delete', compact('expense'));
+    }
+
+    public function edit($id)
+    {
+        $expense = Expense::findOrFail($id);
+        return view('expenses.edit', compact('expense'));
     }
 
     public function update(Request $request, $id)
@@ -38,12 +52,12 @@ class ExpenseController extends Controller
         ]);
         $expense = Expense::findOrFail($id);
         $expense->update($request->all());
-        return response()->json($expense);
+        return redirect()->route('expenses.index');
     }
 
     public function destroy($id)
     {
         Expense::findOrFail($id)->delete();
-        return response()->json(null, 204);
+        return redirect()->route('expenses.index');
     }
 }

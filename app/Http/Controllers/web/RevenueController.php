@@ -9,7 +9,13 @@ class RevenueController extends Controller
 {
     public function index()
     {
-        return response()->json(Revenue::all());
+        $revenues = Revenue::all();
+        return view('revenues.index', compact('revenues'));
+    }
+
+    public function create()
+    {
+        return view('revenues.create');
     }
 
     public function store(Request $request)
@@ -19,12 +25,20 @@ class RevenueController extends Controller
             'amount' => 'required|integer',
             'revenue_date' => 'required|date',
         ]);
-        return response()->json(Revenue::create($request->all()), 201);
+        Revenue::create($request->all());
+        return redirect()->route('revenues.index');
     }
 
     public function show($id)
     {
-        return response()->json(Revenue::findOrFail($id));
+        $revenue = Revenue::findOrFail($id);
+        return view('revenues.show', compact('revenue'));
+    }
+
+    public function edit($id)
+    {
+        $revenue = Revenue::findOrFail($id);
+        return view('revenues.edit', compact('revenue'));
     }
 
     public function update(Request $request, $id)
@@ -36,12 +50,12 @@ class RevenueController extends Controller
         ]);
         $revenue = Revenue::findOrFail($id);
         $revenue->update($request->all());
-        return response()->json($revenue);
+        return redirect()->route('revenues.index');
     }
 
     public function destroy($id)
     {
         Revenue::findOrFail($id)->delete();
-        return response()->json(null, 204);
+        return redirect()->route('revenues.index');
     }
 }

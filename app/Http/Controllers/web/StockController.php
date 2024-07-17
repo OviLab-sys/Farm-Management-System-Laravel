@@ -9,7 +9,13 @@ class StockController extends Controller
 {
     public function index()
     {
-        return response()->json(Stock::all());
+        $stocks = Stock::all();
+        return view('stocks.index', compact('stocks'));
+    }
+
+    public function create()
+    {
+        return view('stocks.create');
     }
 
     public function store(Request $request)
@@ -23,13 +29,19 @@ class StockController extends Controller
         ]);
 
         $stock = Stock::create($request->all());
-        return response()->json($stock, 201);
+        return redirect()->route('stocks.index')->with('success', 'Stock created successfully.');
     }
 
-    public function show($id)
+    public function delete($id)
     {
         $stock = Stock::findOrFail($id);
-        return response()->json($stock);
+        return view('stocks.delete', compact('stock'));
+    }
+
+    public function edit($id)
+    {
+        $stock = Stock::findOrFail($id);
+        return view('stocks.edit', compact('stock'));
     }
 
     public function update(Request $request, $id)
@@ -44,12 +56,12 @@ class StockController extends Controller
 
         $stock = Stock::findOrFail($id);
         $stock->update($request->all());
-        return response()->json($stock);
+        return redirect()->route('stocks.index')->with('success', 'Stock updated successfully.');
     }
 
     public function destroy($id)
     {
         Stock::findOrFail($id)->delete();
-        return response()->json(null, 204);
+        return redirect()->route('stocks.index')->with('success', 'Stock deleted successfully.');
     }
 }
