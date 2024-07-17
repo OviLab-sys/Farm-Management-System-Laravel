@@ -9,7 +9,13 @@ class CropsController extends Controller
 {
     public function index()
     {
-        return response()->json(Crop::all());
+        $crops = Crop::all();
+        return view('crops.index', compact('crops'));
+    }
+
+    public function create()
+    {
+        return view('crops.create');
     }
 
     public function store(Request $request)
@@ -20,12 +26,21 @@ class CropsController extends Controller
             'planting_date' => 'required|date',
             'harvesting_date' => 'required|date',
         ]);
-        return response()->json(Crop::create($request->all()), 201);
+
+        Crop::create($request->all());
+        return redirect()->route('crops.index');
     }
 
     public function show($id)
     {
-        return response()->json(Crop::findOrFail($id));
+        $crop = Crop::findOrFail($id);
+        return view('crops.show', compact('crop'));
+    }
+
+    public function edit($id)
+    {
+        $crop = Crop::findOrFail($id);
+        return view('crops.edit', compact('crop'));
     }
 
     public function update(Request $request, $id)
@@ -36,14 +51,15 @@ class CropsController extends Controller
             'planting_date' => 'required|date',
             'harvesting_date' => 'required|date',
         ]);
+
         $crop = Crop::findOrFail($id);
         $crop->update($request->all());
-        return response()->json($crop);
+        return redirect()->route('crops.index');
     }
 
     public function destroy($id)
     {
         Crop::findOrFail($id)->delete();
-        return response()->json(null, 204);
+        return redirect()->route('crops.index');
     }
 }
