@@ -20,9 +20,7 @@ use App\Http\Controllers\SuppliersController;
 use App\Http\Controllers\SearchController;
 
 
-Route::get('/', function () {
-    return view('welcome');
-});
+
 
 Route::group(['prefix' => 'crop-categories'], function() {
     Route::get('/', [CropCategoriesController::class, 'index'])->name('crop-categories.index');

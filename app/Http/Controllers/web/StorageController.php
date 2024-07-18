@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Storage;
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
 class StorageController extends Controller

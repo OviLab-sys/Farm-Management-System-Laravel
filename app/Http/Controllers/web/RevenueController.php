@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Revenue;
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
 class RevenueController extends Controller

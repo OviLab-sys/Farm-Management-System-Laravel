@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Planting;
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
 class PlantingController extends Controller

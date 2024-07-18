@@ -19,7 +19,9 @@ use App\Http\Controllers\web\CropsController;
 
 
 
-
+Route::get('/', function () {
+    return view('welcome');
+});
 Route::resource('suppliers', SuppliersController::class);
 Route::resource('stored_crops', StoredCropsController::class);
 Route::resource('storages', StorageController::class);

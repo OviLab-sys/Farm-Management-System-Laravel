@@ -4,6 +4,7 @@ namespace App\Http\Controllers\web;
 
 use App\Models\Crop;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 
 class CropsController extends Controller
 {

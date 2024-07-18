@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\StoredCrops;
 use App\Models\Crop;
 use App\Models\Storage;
+use App\Http\Controllers\Controller;
 use App\Models\Harvest;
 use Illuminate\Http\Request;
 
